@@ -14,6 +14,10 @@ public class Navigation : MonoBehaviour
         GameObject.FindFirstObjectByType<mainMenuActivator>().activate();
         Destroy(gameObject);
     }
+    public void Quit()
+    {
+        Application.Quit();
+    }
     public void spawnSettings()
     {
         AudioManager.instance.PlayNavSound();
