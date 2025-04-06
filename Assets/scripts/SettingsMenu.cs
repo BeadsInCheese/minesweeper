@@ -20,6 +20,17 @@ public class SettingsMenu : MonoBehaviour
     public Slider musicSlider;
 
     public AudioMixer mixer;
+    public IEnumerator debouncePlaysound(float timeout)
+    {
+        
+        float timer = 0;
+        while (timer < timeout) {
+            timer+= Time.deltaTime;
+            yield return 0; 
+        }
+        AudioManager.instance.PlayNavSound();
+    }
+    Coroutine debouncesound;
     void Start()
     {
         mineRate.minValue = 0.1f;
@@ -55,12 +66,21 @@ public class SettingsMenu : MonoBehaviour
         mixer.GetFloat("masterVol", out temp);
         sfxSlider.value = temp;
 
-        sfxSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("sfxVol", val); });
+        sfxSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("sfxVol", val); 
+            if (debouncesound != null)
+            {
+                StopCoroutine(debouncesound);
+                
+            }
+            debouncesound = StartCoroutine(debouncePlaysound(0.3f));
+            
+        });
+        
         musicSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("musicVol", val); });
         masterSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("masterVol", val); });
 
     }
-
+    
     // Update is called once per frame
     void Update()
     {
