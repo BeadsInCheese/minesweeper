@@ -48,7 +48,7 @@ public class FadeController : MonoBehaviour
     public IEnumerator changeSceneWithTransition(string scene)
     {
         yield return fadeout();
-        SceneManager.LoadScene(scene);
+        SceneManager.LoadSceneAsync(scene);
 
     }
     void Awake()
