@@ -28,12 +28,12 @@ public class Navigation : MonoBehaviour
     public void loadGame()
     {
         AudioManager.instance.PlayNavSound();
-        SceneManager.LoadScene("Game");
+        StartCoroutine(FadeController.instance.changeSceneWithTransition("Game"));
 
     }
     public void loadMainMenu()
     {
         AudioManager.instance.PlayNavSound();
-        SceneManager.LoadScene("MainMenu");
+        StartCoroutine(FadeController.instance.changeSceneWithTransition("MainMenu"));
     }
 }
