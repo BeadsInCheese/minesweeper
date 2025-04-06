@@ -57,15 +57,20 @@ public class Board : MonoBehaviour
             tiles.Add(tile.GetComponent<tile>());
             
         }
+        updateGrid();
+    }
+    public void updateGrid()
+    {
+        for (int i = 0; i < gridSizeX * gridSizeY; i++)
+        {
+          transform.GetChild(i).transform.localPosition = new Vector3((i % gridSizeX) * 100 * (9.0f / gridSizeY), (i / gridSizeX) * 100 * (9.0f / gridSizeY), 0);
+          transform.GetChild(i).transform.localScale = Vector3.one * buttonScale * (9.0f / gridSizeY);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < gridSizeX * gridSizeY; i++)
-        {
-            transform.GetChild(i).transform.localPosition= new Vector3((i % gridSizeX) * 100*(9.0f/gridSizeY), (i / gridSizeX) * 100  * (9.0f / gridSizeY), 0);
-            transform.GetChild(i).transform.localScale = Vector3.one*buttonScale  * (9.0f / gridSizeY);
-        }
+
     }
 }
