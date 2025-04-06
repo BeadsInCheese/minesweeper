@@ -20,6 +20,9 @@ public class SettingsMenu : MonoBehaviour
     public Slider musicSlider;
 
     public AudioMixer mixer;
+
+
+
     public IEnumerator debouncePlaysound(float timeout)
     {
         
@@ -36,8 +39,8 @@ public class SettingsMenu : MonoBehaviour
         mineRate.minValue = 0.1f;
         mineRate.maxValue = 0.8f;
         mineRate.value=Board.mineProb;
-        rateText.text = Board.mineProb + "%";
-        mineRate.onValueChanged.AddListener((float val) => { Board.mineProb = val; rateText.text = System.Math.Round(val,2) + "%"; });
+        rateText.text = System.Math.Round(Board.mineProb*100, 2) + "%";
+        mineRate.onValueChanged.AddListener((float val) => {PlayerPrefs.SetFloat("mines",val); Board.mineProb = val; rateText.text = System.Math.Round(val * 100, 2) + "%"; });
         gridHeight.maxValue = 18;
         gridWidth.maxValue = 18;
         gridHeight.minValue = 5;
@@ -48,8 +51,8 @@ public class SettingsMenu : MonoBehaviour
         gridWidth.value = Board.gridSizeX;
         hText.text = Board.gridSizeY + "";
         wText.text = Board.gridSizeX + "";
-        gridWidth.onValueChanged.AddListener((float val) => { Board.gridSizeX = (int)val;wText.text = val + ""; });
-        gridHeight.onValueChanged.AddListener((float val) => { Board.gridSizeY = (int)val; hText.text = val + ""; });
+        gridWidth.onValueChanged.AddListener((float val) => { PlayerPrefs.SetInt("sx", (int)val);  Board.gridSizeX = (int)val;wText.text = val + ""; });
+        gridHeight.onValueChanged.AddListener((float val) => { PlayerPrefs.SetInt("sy", (int)val); Board.gridSizeY = (int)val; hText.text = val + ""; });
 
         sfxSlider.maxValue = 20;
         masterSlider.maxValue = 20;
@@ -64,9 +67,9 @@ public class SettingsMenu : MonoBehaviour
         mixer.GetFloat("musicVol", out temp);
         musicSlider.value = temp;
         mixer.GetFloat("masterVol", out temp);
-        sfxSlider.value = temp;
+        masterSlider.value = temp;
 
-        sfxSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("sfxVol", val); 
+        sfxSlider.onValueChanged.AddListener((float val) => {PlayerPrefs.SetFloat("sfx", val); mixer.SetFloat("sfxVol", val); 
             if (debouncesound != null)
             {
                 StopCoroutine(debouncesound);
@@ -76,8 +79,8 @@ public class SettingsMenu : MonoBehaviour
             
         });
         
-        musicSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("musicVol", val); });
-        masterSlider.onValueChanged.AddListener((float val) => { mixer.SetFloat("masterVol", val); });
+        musicSlider.onValueChanged.AddListener((float val) => { PlayerPrefs.SetFloat("music", val); mixer.SetFloat("musicVol", val); });
+        masterSlider.onValueChanged.AddListener((float val) => { PlayerPrefs.SetFloat("master", val); mixer.SetFloat("masterVol", val); });
 
     }
     
